@@ -1,0 +1,456 @@
+/* ============================================
+   原型画布 · Minimalism 深色（低对比、细线、极少强调色）
+   ============================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-canvas: #0f0f12;
+  --bg-surface: #16161a;
+  --bg-elevated: #1f1f24;
+  --bg-input: #121214;
+  --border: #2a2a32;
+  --border-strong: #3f3f4a;
+  --text: #ececf1;
+  --muted: #9898a6;
+  --muted-faint: #6b6b78;
+  --accent: #a8bfd9;
+  --accent-hover: #c5d6ea;
+  --danger: #f87171;
+  --danger-border: #ef4444;
+  --focus-ring: rgba(168, 191, 217, 0.28);
+  font-family: system-ui, -apple-system, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+html {
+  color-scheme: dark;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg-canvas);
+}
+
+.app {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+}
+
+/* ---------- 侧栏 ---------- */
+.sidebar {
+  width: 272px;
+  flex-shrink: 0;
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.sidebar-header {
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-header h1 {
+  margin: 0 0 6px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.hint {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.panel-note {
+  margin: 0 0 12px;
+  line-height: 1.55;
+}
+
+.panel {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.panel h2 {
+  margin: 0 0 12px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.field span {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.field input[type="text"],
+.field input[type="number"] {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 8px 10px;
+  color: var(--text);
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.field input[type="text"]:hover,
+.field input[type="number"]:hover {
+  border-color: var(--border-strong);
+}
+
+.field input[type="text"]:focus,
+.field input[type="number"]:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+.field-row {
+  display: flex;
+  gap: 10px;
+}
+
+.field.compact {
+  flex: 1;
+}
+
+.field.compact input {
+  width: 100%;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.check input {
+  accent-color: var(--accent);
+}
+
+.btn-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+button {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 7px 14px;
+  border-radius: 2px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+}
+
+button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--bg-elevated);
+}
+
+button:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.panel-head h2 {
+  margin: 0;
+}
+
+#btn-add-page {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  font-size: 16px;
+  line-height: 1;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+#btn-add-page:hover {
+  color: var(--accent);
+}
+
+.page-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.page-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 2px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.page-list li:hover {
+  background: var(--bg-elevated);
+}
+
+.page-list li.active {
+  border-color: var(--border-strong);
+  background: var(--bg-elevated);
+  box-shadow: inset 3px 0 0 0 var(--accent);
+}
+
+.page-list li .page-list-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+.page-delete-btn {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  font-size: 12px;
+  line-height: 1.4;
+  border-radius: 2px;
+  border: 1px solid var(--border);
+  background: var(--bg-input);
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.page-delete-btn:hover:not(:disabled) {
+  border-color: var(--danger-border);
+  color: var(--danger);
+  background: var(--bg-input);
+}
+
+.page-delete-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.page-rename-input {
+  flex: 1;
+  min-width: 0;
+  padding: 5px 8px;
+  font: inherit;
+  font-size: 13px;
+  border-radius: 2px;
+  border: 1px solid var(--accent);
+  background: var(--bg-input);
+  color: var(--text);
+}
+
+.page-rename-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 12px 20px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.save-status.saving {
+  color: var(--accent);
+}
+
+.save-status.error {
+  color: var(--danger);
+}
+
+/* ---------- 主区 ---------- */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  background: var(--bg-canvas);
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 14px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.tool {
+  min-width: 52px;
+}
+
+.tool.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--bg-elevated);
+}
+
+.tool-kbd {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 5px;
+  font-size: 10px;
+  font-family: ui-monospace, "Cascadia Code", monospace;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--muted);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+}
+
+.tool.active .tool-kbd {
+  color: var(--accent);
+  border-color: var(--border-strong);
+  background: var(--bg-input);
+}
+
+.toolbar-divider {
+  width: 1px;
+  height: 22px;
+  background: var(--border);
+  margin: 0 8px;
+}
+
+.toolbar-spacer {
+  flex: 1;
+  min-width: 4px;
+}
+
+#btn-delete:hover {
+  border-color: var(--danger-border);
+  color: var(--danger);
+}
+
+.canvas-wrap {
+  flex: 1;
+  position: relative;
+  min-height: 0;
+  background: var(--bg-canvas);
+}
+
+#canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  cursor: crosshair;
+}
+
+#canvas.cursor-grab {
+  cursor: grab;
+}
+
+#canvas.cursor-grabbing {
+  cursor: grabbing;
+}
+
+.canvas-hint {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: var(--muted);
+  pointer-events: none;
+  background: rgba(22, 22, 28, 0.92);
+  padding: 8px 14px;
+  border-radius: 2px;
+  border: 1px solid var(--border);
+  letter-spacing: 0.01em;
+}
+
+.text-editor {
+  position: fixed;
+  z-index: 1000;
+  background: var(--bg-elevated);
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  color: var(--text);
+  padding: 8px 10px;
+  resize: both;
+  min-width: 120px;
+  min-height: 36px;
+  font: inherit;
+  line-height: 1.45;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+}
+
+.text-editor:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--focus-ring), 0 8px 32px rgba(0, 0, 0, 0.45);
+}
+
+.pages-panel {
+  flex: 1;
+  min-height: 120px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.page-list::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 3px;
+}
+
+.page-list::-webkit-scrollbar-track {
+  background: transparent;
+}

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>原型画布 · 本地版</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <!-- 应用根节点：脚本挂载于此 -->
+  <div id="app" class="app">
+    <!-- 左侧：页面列表与项目设置 -->
+    <aside class="sidebar">
+      <header class="sidebar-header">
+        <h1>原型画布</h1>
+        <p class="hint">纯前端 · IndexedDB 自动保存</p>
+      </header>
+
+      <section class="panel">
+        <h2>项目</h2>
+        <label class="field">
+          <span>名称</span>
+          <input type="text" id="project-name" placeholder="未命名项目" />
+        </label>
+        <p class="hint panel-note">新建页面的默认宽高（可在下方「当前页面」单独修改）</p>
+        <div class="field-row">
+          <label class="field compact">
+            <span>默认宽</span>
+            <input type="number" id="project-width" min="320" max="8192" step="1" />
+          </label>
+          <label class="field compact">
+            <span>默认高</span>
+            <input type="number" id="project-height" min="240" max="8192" step="1" />
+          </label>
+        </div>
+        <label class="check">
+          <input type="checkbox" id="show-frame" checked />
+          <span>非当前页面半透明</span>
+        </label>
+        <div class="btn-row">
+          <button type="button" id="btn-export" title="导出 JSON">导出</button>
+          <button type="button" id="btn-import" title="导入 JSON">导入</button>
+          <input type="file" id="import-file" accept="application/json" hidden />
+        </div>
+      </section>
+
+      <section class="panel pages-panel">
+        <div class="panel-head">
+          <h2>页面</h2>
+          <button type="button" id="btn-add-page" title="新建页面">＋</button>
+        </div>
+        <ul id="page-list" class="page-list"></ul>
+      </section>
+
+      <section class="panel" id="page-size-panel">
+        <h2>当前页面尺寸</h2>
+        <p class="hint panel-note">在画布或左侧列表选中页面后可改；绘制内容仅保存在当前页面内</p>
+        <div class="field-row">
+          <label class="field compact">
+            <span>宽度</span>
+            <input type="number" id="page-width" min="320" max="8192" step="1" />
+          </label>
+          <label class="field compact">
+            <span>高度</span>
+            <input type="number" id="page-height" min="240" max="8192" step="1" />
+          </label>
+        </div>
+      </section>
+
+      <footer class="sidebar-footer">
+        <span id="save-status" class="save-status">就绪</span>
+      </footer>
+    </aside>
+
+    <!-- 主区域：工具栏 + 画布 -->
+    <main class="main">
+      <nav class="toolbar" aria-label="绘图工具">
+        <button type="button" class="tool active" data-tool="select" title="数字键 1">选择 <kbd class="tool-kbd">V</kbd></button>
+        <button type="button" class="tool" data-tool="rect" title="数字键 2">矩形 <kbd class="tool-kbd">R</kbd></button>
+        <button type="button" class="tool" data-tool="ellipse" title="数字键 3">椭圆 <kbd class="tool-kbd">E</kbd></button>
+        <button type="button" class="tool" data-tool="line" title="数字键 4">直线 <kbd class="tool-kbd">L</kbd></button>
+        <button type="button" class="tool" data-tool="draw" title="字母键 B 或 数字键 5">手绘 <kbd class="tool-kbd">B</kbd></button>
+        <button type="button" class="tool" data-tool="text" title="数字键 6">文本 <kbd class="tool-kbd">T</kbd></button>
+        <button type="button" class="tool" data-tool="connect" title="数字键 7">连线 <kbd class="tool-kbd">C</kbd></button>
+        <span class="toolbar-divider"></span>
+        <button type="button" id="btn-delete" title="Backspace">删除 <kbd class="tool-kbd">Del</kbd></button>
+        <span class="toolbar-spacer" aria-hidden="true"></span>
+        <button type="button" id="btn-align-grid" title="以「默认宽+200、默认高+200」为网格步长对齐全部页面，并消除重叠">对齐网格</button>
+      </nav>
+
+      <div class="canvas-wrap">
+        <!-- 无限画布：使用 Canvas 2D，相机变换由脚本维护 -->
+        <canvas id="canvas" tabindex="0"></canvas>
+        <!-- 浮动提示：连线相关文案由脚本在切换到连线工具时切换 -->
+        <div id="canvas-hint" class="canvas-hint"></div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 文本编辑用隐藏 textarea，选中文字工具双击或新建后可聚焦编辑 -->
+  <textarea id="text-editor" class="text-editor" hidden></textarea>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
